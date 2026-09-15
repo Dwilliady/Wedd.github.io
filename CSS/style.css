@@ -1,0 +1,885 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+}
+
+
+
+/* =====================================
+   OPENING
+===================================== */
+
+.hero {
+
+    min-height: 100vh;
+
+    background-image:
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop");
+
+    background-size: cover;
+
+    background-position: center;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+}
+
+
+.overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.48);
+}
+
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 30px;
+}
+
+
+.small-title {
+
+    font-size: 12px;
+
+    letter-spacing: 5px;
+
+    margin-bottom: 20px;
+}
+
+
+.hero h1 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 80px;
+
+    font-weight: 500;
+
+    line-height: 0.9;
+
+    margin-bottom: 25px;
+}
+
+
+.hero h1 span {
+
+    display: block;
+
+    font-size: 45px;
+
+    margin: 10px 0;
+}
+
+
+.wedding-date {
+
+    font-size: 16px;
+
+    letter-spacing: 5px;
+
+    margin-bottom: 50px;
+}
+
+
+.guest {
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    margin-bottom: 5px;
+}
+
+
+.guest-name {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 28px;
+
+    margin-bottom: 30px;
+}
+
+
+.btn-opening {
+
+    border: 1px solid white;
+
+    color: white;
+
+    padding: 12px 30px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    transition: 0.3s;
+}
+
+
+.btn-opening:hover {
+
+    background: white;
+
+    color: black;
+}
+
+
+
+/* =====================================
+   MAIN CONTENT
+===================================== */
+
+#mainContent {
+    display: none;
+}
+
+
+.navbar {
+
+    padding: 15px 0;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.05);
+}
+
+
+.navbar-brand {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 28px;
+
+    font-weight: 600;
+}
+
+
+.nav-link {
+
+    font-size: 13px;
+
+    margin-left: 15px;
+}
+
+
+
+/* =====================================
+   SECTIONS
+===================================== */
+
+.section-home {
+
+    padding: 100px 20px;
+
+    background: #fff;
+}
+
+
+.section-light {
+
+    padding: 100px 20px;
+
+    background: #faf8f5;
+}
+
+
+.section-subtitle {
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 15px;
+
+    color: #888;
+}
+
+
+.section-title {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 50px;
+
+    font-weight: 600;
+
+    margin-bottom: 25px;
+}
+
+
+.section-text {
+
+    max-width: 600px;
+
+    margin: auto;
+
+    line-height: 1.9;
+
+    color: #666;
+}
+
+
+.divider {
+
+    margin: 30px 0;
+
+    font-size: 20px;
+}
+
+
+.wedding-date-main {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 28px;
+}
+
+
+/* =====================================
+   COUNTDOWN - INLINE CIRCULAR
+===================================== */
+
+.countdown-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 45px;
+
+    flex-wrap: nowrap;
+}
+
+
+.countdown-item {
+
+    width: 82px;
+
+    height: 82px;
+
+    border: 1px solid #cfcfcf;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.countdown-item span {
+
+    display: block;
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 30px;
+
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+.countdown-item small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    color: #777;
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 576px) {
+
+    .countdown-container {
+
+        gap: 5px;
+
+        margin-top: 35px;
+
+    }
+
+
+    .countdown-item {
+
+        width: 58px;
+
+        height: 58px;
+
+    }
+
+
+    .countdown-item span {
+
+        font-size: 22px;
+
+    }
+
+
+    .countdown-item small {
+
+        font-size: 6px;
+
+        letter-spacing: 0;
+
+        margin-top: 3px;
+
+    }
+
+}
+
+
+/* =====================================
+   COUPLE
+===================================== */
+
+.couple-card {
+
+    padding: 30px;
+}
+
+
+.couple-photo {
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: #ddd;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 70px;
+
+    color: white;
+}
+
+
+.couple-card h3 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+}
+
+
+.couple-card p {
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+.love-symbol {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 40px;
+}
+
+
+
+/* =====================================
+   EVENT
+===================================== */
+
+.event-card {
+
+    padding: 40px 20px;
+
+    border: 1px solid #eee;
+
+    background: white;
+
+    height: 100%;
+}
+
+
+.event-icon {
+
+    font-size: 30px;
+
+    margin-bottom: 15px;
+}
+
+
+.event-card h3 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 30px;
+
+    margin-bottom: 20px;
+}
+
+
+.event-card p {
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+
+/* =====================================
+   LOCATION
+===================================== */
+
+.location-card {
+
+    max-width: 700px;
+
+    margin: 30px auto 0;
+
+    padding: 45px 30px;
+
+    background: #faf8f5;
+
+    border: 1px solid #eee;
+}
+
+
+.location-card h3 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 32px;
+
+    margin-bottom: 15px;
+}
+
+
+.location-address {
+
+    color: #777;
+
+    line-height: 1.8;
+
+    margin-bottom: 25px;
+}
+
+
+.btn-map {
+
+    background: #333;
+
+    color: white;
+
+    padding: 12px 25px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+}
+
+
+.btn-map:hover {
+
+    background: #555;
+
+    color: white;
+}
+
+
+
+/* =====================================
+   GALLERY
+===================================== */
+
+#weddingGallery {
+
+    max-width: 900px;
+
+    margin-left: auto;
+
+    margin-right: auto;
+}
+
+
+.gallery-image {
+
+    width: 100%;
+
+    height: 550px;
+
+    object-fit: cover;
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+
+    width: 10%;
+}
+
+
+
+/* =====================================
+   WEDDING GIFT
+===================================== */
+
+.gift-card {
+
+    max-width: 450px;
+
+    margin-left: auto;
+
+    margin-right: auto;
+
+    padding: 45px 30px;
+
+    background: #faf8f5;
+
+    border: 1px solid #eee;
+}
+
+
+.gift-icon {
+
+    font-size: 45px;
+
+    margin-bottom: 15px;
+}
+
+
+.gift-card h3 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 32px;
+
+    margin-bottom: 5px;
+}
+
+
+.account-name {
+
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+
+.account-number {
+
+    padding: 15px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    font-size: 22px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+    margin-bottom: 20px;
+}
+
+
+.btn-copy {
+
+    border: 1px solid #333;
+
+    background: #333;
+
+    color: white;
+
+    padding: 12px 25px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+}
+
+
+.btn-copy:hover {
+
+    background: #555;
+
+    color: white;
+}
+
+
+.copy-message {
+
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+
+/* =====================================
+   RSVP
+===================================== */
+
+#rsvp form {
+
+    margin-top: 40px;
+}
+
+
+.form-label {
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.form-control,
+.form-select {
+
+    border-radius: 0;
+
+    padding: 12px;
+
+    border-color: #ddd;
+}
+
+
+.btn-submit {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: #333;
+
+    color: white;
+}
+
+
+.btn-submit:hover {
+
+    background: #555;
+
+    color: white;
+}
+
+
+
+/* =====================================
+   FOOTER
+===================================== */
+
+footer {
+
+    padding: 60px 20px;
+
+    background: #222;
+
+    color: white;
+}
+
+
+footer h3 {
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 30px;
+}
+
+
+footer p {
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+}
+
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 576px) {
+
+    .hero h1 {
+
+        font-size: 58px;
+    }
+
+
+    .hero h1 span {
+
+        font-size: 35px;
+    }
+
+
+    .small-title {
+
+        font-size: 10px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .wedding-date {
+
+        font-size: 13px;
+    }
+
+
+    .section-title {
+
+        font-size: 40px;
+    }
+
+
+    .section-home,
+    .section-light {
+
+        padding: 80px 20px;
+    }
+
+
+    .couple-photo {
+
+        width: 150px;
+
+        height: 150px;
+    }
+
+
+    .love-symbol {
+
+        margin: 10px 0 20px;
+    }
+
+
+    /* Countdown mobile */
+
+    .countdown-container {
+
+        gap: 7px;
+    }
+
+
+    .countdown-item {
+
+        min-width: 58px;
+
+        padding: 13px 5px;
+    }
+
+
+    .countdown-item span {
+
+        font-size: 27px;
+    }
+
+
+    .countdown-item small {
+
+        font-size: 8px;
+
+        letter-spacing: 0;
+    }
+
+
+    /* Gallery mobile */
+
+    .gallery-image {
+
+        height: 400px;
+    }
+
+
+    .location-card {
+
+        padding: 35px 20px;
+    }
+
+
+    .account-number {
+
+        font-size: 18px;
+
+        letter-spacing: 1px;
+    }
+
+}
