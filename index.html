@@ -1022,20 +1022,32 @@
            OPEN INVITATION
         ====================================== */
 
-        const openButton =
-            document.getElementById("openInvitation");
+        document.getElementById("openInvitation").addEventListener("click", function () {
 
-        const mainContent =
-            document.getElementById("mainContent");
+            const opening = document.getElementById("opening");
+            const mainContent = document.getElementById("mainContent");
 
+            // Fade opening
+            opening.style.opacity = "0";
 
-        openButton.addEventListener("click", function () {
+            // Tunggu sedikit supaya fade opening terlihat
+            setTimeout(function () {
 
-            mainContent.style.display = "block";
+                // Sembunyikan opening
+                opening.style.display = "none";
 
-            document.getElementById("opening").style.display = "none";
+                // Tampilkan main content
+                mainContent.style.display = "block";
 
-            window.scrollTo(0, 0);
+                // Pastikan animasi fade dijalankan ulang
+                mainContent.style.animation = "none";
+
+                setTimeout(function () {
+                    mainContent.style.animation =
+                        "mainContentFade 1s ease";
+                }, 10);
+
+            }, 700);
 
         });
 
@@ -1565,10 +1577,12 @@
 
         async function initializeWebsite() {
 
-            try {
+           try {
 
-                // Tunggu semua data penting selesai
+                // Tunggu data guest
                 await loadGuest();
+
+                // Tunggu ucapan
                 await loadWishes();
 
             } catch (error) {
@@ -1580,15 +1594,21 @@
 
             } finally {
 
-                // Tampilkan website
                 const loader =
                     document.getElementById("pageLoader");
 
-                loader.style.opacity = "0";
+                const mainContent =
+                    document.getElementById("mainContent");
 
+                // Fade out loading
+                loader.classList.add("hide");
+
+                // Fade in website
                 setTimeout(() => {
-                    loader.style.display = "none";
-                }, 500);
+
+                    mainContent.classList.add("show");
+
+                }, 300);
             }
         }
 
