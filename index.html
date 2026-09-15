@@ -33,6 +33,8 @@
     <link rel="stylesheet"
           href="CSS/style.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 
@@ -79,7 +81,7 @@
             </p>
 
 
-            <h2 class="guest-name">
+            <h2 id="guestGreeting" class="guest-name">
                 Tamu Undangan
             </h2>
 
@@ -839,16 +841,15 @@
 
 
                             <div class="mb-3">
+                                <label class="form-label">Nama</label>
 
-                                <label class="form-label">
-                                    Nama
-                                </label>
-
-                                <input type="text"
-                                       class="form-control"
-                                       id="guestName"
-                                       required>
-
+                                <input
+                                    type="text"
+                                    id="guestName"
+                                    class="form-control"
+                                    placeholder="Memuat nama..."
+                                    readonly
+                                    required>
                             </div>
 
 
@@ -880,18 +881,16 @@
 
 
                             <div class="mb-3">
+                                <label class="form-label">Jumlah Tamu</label>
 
-                                <label class="form-label">
-                                    Jumlah Tamu
-                                </label>
+                                <select
+                                    id="guestCount"
+                                    class="form-select"
+                                    required>
 
-                                <input type="number"
-                                       class="form-control"
-                                       id="guestCount"
-                                       min="0"
-                                       max="5"
-                                       value="1">
+                                    <option value="">Memuat...</option>
 
+                                </select>
                             </div>
 
 
@@ -925,6 +924,43 @@
 
             </div>
 
+        </section>
+
+        <section id="wishes" class="py-5">
+            <div class="container">
+
+                <div class="section-title text-center mb-4">
+                    <p class="text-uppercase">Doa & Ucapan</p>
+                    <h2>Ucapan & Doa</h2>
+                </div>
+
+                <div id="wishesCarousel" class="carousel slide">
+
+                    <div class="carousel-inner" id="wishesContainer">
+                        <!-- Ucapan akan dimuat otomatis -->
+                    </div>
+
+                    <button
+                        class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#wishesCarousel"
+                        data-bs-slide="prev">
+
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+
+                    <button
+                        class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#wishesCarousel"
+                        data-bs-slide="next">
+
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+
+                </div>
+
+            </div>
         </section>
 
 
@@ -1121,29 +1157,436 @@
 
         }
 
+        /* =====================================
+        API
+        ====================================== */
+        const API_URL =
+            "https://script.google.com/macros/s/AKfycbwxBSx_9eGdtYpba7M2BcBek1m3ELQ8ea_Fs_BUZigGL1_LZIoBbBm4thasaN5guDLqbw/exec";
 
 
         /* =====================================
-           RSVP
+        GUEST PERSONALIZATION
         ====================================== */
+
+        let currentGuest = null;
+
+
+        async function loadGuest() {
+
+            const params = new URLSearchParams(window.location.search);
+            const guestName = params.get("to");
+
+            if (!guestName) {
+                console.log("Guest tidak ditemukan di URL.");
+                return;
+            }
+
+            try {
+
+                const response = await fetch(
+                    API_URL +
+                    "?action=guest&name=" +
+                    encodeURIComponent(guestName)
+                );
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    console.log("Guest tidak ditemukan.");
+                    return;
+                }
+
+                currentGuest = result.guest;
+
+                console.log("CURRENT GUEST:", currentGuest);
+                console.log("GUEST ID:", currentGuest.id);          
+
+                // Isi Nama Didepan sebelum buka undangan
+                document.getElementById("guestGreeting").innerText =
+                    currentGuest.nama;
+
+                // Isi nama otomatis
+                document.getElementById("guestName").value =
+                    currentGuest.nama;
+
+                // Isi pilihan jumlah tamu
+                const guestCount =
+                    document.getElementById("guestCount");
+
+                guestCount.innerHTML = "";
+
+                const maxGuest =
+                    parseInt(currentGuest.tamuMaks);
+
+                for (let i = 1; i <= maxGuest; i++) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = i;
+                    option.textContent = i + " Tamu";
+
+                    guestCount.appendChild(option);
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Gagal mengambil data guest:",
+                    error
+                );
+            }
+        }
+
+
+        /* =====================================
+        RSVP MODAL
+        ====================================== */
+
+        function showRsvpModal(icon, title, message) {
+
+            document.getElementById("rsvpModalIcon").innerText = icon;
+
+            document.getElementById("rsvpModalTitle").innerText = title;
+
+            document.getElementById("rsvpModalMessage").innerText = message;
+
+
+            const modalElement =
+                document.getElementById("rsvpMessageModal");
+
+
+            const rsvpModal =
+                new bootstrap.Modal(modalElement);
+
+
+            rsvpModal.show();
+        }
+
+
+        /* =====================================
+        Wishes
+        ====================================== */
+
+        async function loadWishes() {
+
+            const container =
+                document.getElementById("wishesContainer");
+
+                try {
+
+                    const response = await fetch(
+                        API_URL + "?action=wishes"
+                    );
+
+                    const result =
+                        await response.json();
+
+                    if (!result.success) {
+                        container.innerHTML = `
+                            <div class="carousel-item active">
+                                <div class="wish-card-wrapper">
+                                    <div class="wish-card text-center">
+                                        <div class="wish-icon">💌</div>
+                                        <div class="wish-message">
+                                            Belum ada ucapan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        return;
+                    }
+
+                    const wishes = result.wishes;
+
+                    if (wishes.length === 0) {
+
+                        container.innerHTML = `
+                            <div class="carousel-item active">
+                                <div class="wish-card-wrapper">
+                                    <div class="wish-card text-center">
+
+                                        <div class="wish-icon">💌</div>
+
+                                        <div class="wish-message">
+                                            Jadilah salah satu yang pertama
+                                            memberikan ucapan dan doa.
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        return;
+                    }
+
+                    container.innerHTML = "";
+
+                    wishes.forEach((wish, index) => {
+
+                        let statusText = "";
+
+                        if (wish.kehadiran === "Hadir") {
+
+                            statusText =
+                                "Hadir" +
+                                (wish.jumlahTamu
+                                    ? " • " + wish.jumlahTamu + " Tamu"
+                                    : "");
+
+                        } else {
+
+                            statusText = "Tidak Hadir";
+                        }
+
+                        const activeClass =
+                            index === 0 ? "active" : "";
+
+                        const item = document.createElement("div");
+
+                        item.className =
+                            "carousel-item " + activeClass;
+
+                        item.innerHTML = `
+                            <div class="wish-card-wrapper">
+
+                                <div class="wish-card">
+
+                                    <div class="wish-icon">
+                                        ❤️
+                                    </div>
+
+                                    <div class="wish-name">
+                                        ${escapeHtml(wish.nama)}
+                                    </div>
+
+                                    <div class="wish-status">
+                                        ${statusText}
+                                    </div>
+
+                                    <div class="wish-message">
+                                        "${escapeHtml(wish.ucapan || "Semoga menjadi keluarga yang bahagia.")}"
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        `;
+
+                        container.appendChild(item);
+                    });
+
+                } catch (error) {
+
+                    console.error(
+                        "Gagal mengambil ucapan:",
+                        error
+                    );
+                }
+            }
+
+            function escapeHtml(text) {
+
+                const div =
+                    document.createElement("div");
+
+                div.textContent =
+                    text || "";
+
+                return div.innerHTML;
+            }   
+
+        /* =====================================
+        RSVP → GOOGLE SHEET
+        ====================================== */
+
+        
 
         const rsvpForm =
             document.getElementById("rsvpForm");
 
 
-        rsvpForm.addEventListener("submit", function (event) {
+        rsvpForm.addEventListener("submit", async function (event) {
 
             event.preventDefault();
 
 
-            alert(
-                "Terima kasih atas konfirmasinya ❤️"
-            );
+            // Ambil data dari form
+            const nama =
+                currentGuest
+                    ? currentGuest.nama
+                    : document.getElementById("guestName").value.trim();
+
+            const kehadiran =
+                document.getElementById("attendance").value;
+
+            const jumlahTamu =
+                document.getElementById("guestCount").value;
+
+            const ucapan =
+                document.getElementById("message").value.trim();
+
+
+            // Validasi nama
+            if (!nama) {
+
+                showRsvpModal(
+                    "⚠️",
+                    "Data Belum Lengkap",
+                    "Silakan isi nama terlebih dahulu."
+                );
+
+                return;
+            }
+
+
+            // Validasi kehadiran
+            if (!kehadiran) {
+
+                showRsvpModal(
+                    "⚠️",
+                    "Data Belum Lengkap",
+                    "Silakan pilih konfirmasi kehadiran."
+                );
+
+                return;
+            }
+
+
+            // Tombol submit
+            const submitButton =
+                rsvpForm.querySelector(
+                    "button[type='submit']"
+                );
+
+
+            submitButton.disabled = true;
+
+            submitButton.innerText = "Mengirim...";
+
+
+            try {
+
+                const response = await fetch(API_URL, {
+
+                    method: "POST",
+
+                    body: JSON.stringify({
+
+                        action: "rsvp",
+
+                        guestId: currentGuest
+                                    ? currentGuest.id
+                                    : "",
+
+                        nama: nama,
+
+                        kehadiran: kehadiran,
+
+                        jumlahTamu: jumlahTamu,
+
+                        ucapan: ucapan
+
+                    })
+
+                });
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    // Kosongkan form
+                    rsvpForm.reset();
+
+
+                    // Tampilkan modal berhasil
+                    showRsvpModal(
+                        "❤️",
+                        "Terima Kasih",
+                        "Atas konfirmasi kehadiran dan doa terbaiknya untuk kami."
+                    );
+
+                }
+                else {
+
+                    showRsvpModal(
+                        "❌",
+                        "RSVP Gagal",
+                        "Maaf, RSVP tidak dapat dikirim. Silakan coba kembali."
+                    );
+
+                }
+
+
+            }
+            catch (error) {
+
+                console.error(error);
+
+
+                showRsvpModal(
+                    "❌",
+                    "Terjadi Kesalahan",
+                    "Maaf, terjadi masalah saat mengirim RSVP. Silakan coba kembali."
+                );
+
+            }
+            finally {
+
+                submitButton.disabled = false;
+
+                submitButton.innerText =
+                    "Kirim Konfirmasi";
+
+            }
 
         });
 
+        
+        loadGuest();
+
+        loadWishes();
+
     </script>
 
+    <!-- RSVP MESSAGE MODAL -->
+    <div class="modal fade" id="rsvpMessageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center border-0">
+
+                <div class="modal-body p-5">
+
+                    <div id="rsvpModalIcon" class="rsvp-modal-icon">
+                        ❤️
+                    </div>
+
+                    <h3 id="rsvpModalTitle" class="rsvp-modal-title mt-3">
+                        Terima Kasih
+                    </h3>
+
+                    <p id="rsvpModalMessage" class="rsvp-modal-message">
+                        Atas konfirmasi kehadiran dan doa terbaiknya
+                        untuk kami.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="btn btn-dark mt-3 px-4"
+                        data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 
