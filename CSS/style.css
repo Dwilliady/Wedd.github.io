@@ -16,6 +16,46 @@ body {
     color: #333;
 }
 
+#pageLoader {
+    position: fixed;
+    inset: 0;
+    background: #faf9f7;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: opacity 0.5s ease;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-heart {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.loader-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.loader-text {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.loader-content .spinner-border {
+    width: 25px;
+    height: 25px;
+}
+
 
 
 /* =====================================
